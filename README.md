@@ -1,73 +1,35 @@
-# React + TypeScript + Vite
+Как запустить локально
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+1. Откройте терминал и клонируйте репозиторий
+git clone https://github.com/darthveronika/ai-agents-workspace.git
+cd ai-agents-workspace
 
-Currently, two official plugins are available:
+2. Установите зависимости
+npm install
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+3. Запустите dev-сервер
+npm run dev
 
-## React Compiler
+Приложение откроется на http://localhost:5173. Не требует бэкенда, внешних API или мощного оборудования
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+Архитектура решения
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Типы (src/types/agent.ts): строгие интерфейсы (AgentRole, AgentStatus, LogEntry). Исключают any, обеспечивают автодополнение в IDE
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Логика (src/hooks/useAgentPipeline.ts): кастомный хук, инкапсулирующий состояние и асинхронный пайплайн. Компоненты только читают данные и вызывают методы
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+UI (src/App.tsx): декларативная отрисовка, привязка к состоянию хука, обработка формы
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Стили (src/index.css): модульные стили на CSS-переменных. Легко кастомизировать, не требуют сборки
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Система агентов
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Реализован линейный пайплайн обработки задачи. Каждый агент выполняет свою роль, передаёт результат следующему и логирует действия в реальном времени:
+1. Координатор: принимает задачу, валидирует входные данные, разбивает на этапы
+2. Исследователь: собирает и фильтрует информацию (mock-данные)
+3. Аналитик: обрабатывает сырые данные, выделяет паттерны и выводы
+4. Формировщик: структурирует анализ в читаемый формат
+5. Валидатор: проверяет полноту, логику и форматирование перед финальной выдачей
+Взаимодействие построено по принципу Promise-цепочки. Задержки (setTimeout) имитируют асинхронные вызовы к внешним сервисам. Архитектура легко адаптируется под Promise.all (параллельное выполнение веток) или интеграцию с реальными LLM API
