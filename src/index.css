@@ -1,8 +1,8 @@
 :root {
   --bg: #f8f9fa;
   --card: #ffffff;
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
+  --primary: #d75d96;
+  --primary-hover: #eb5c80;
   --text: #111827;
   --text-light: #6b7280;
   --border: #e5e7eb;
@@ -283,4 +283,66 @@ body {
   .panels {
     grid-template-columns: 1fr;
   }
+}
+
+.panel-plan {
+  margin-bottom: 1.5rem;
+  background: #f8fafc;
+  border-left: 3px solid var(--primary);
+}
+
+.flow-log {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.flow-item {
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-left: 2px solid var(--border);
+  background: #fafafa;
+  border-radius: 0 8px 8px 0;
+}
+
+.flow-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.flow-from, .flow-to {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.flow-arrow {
+  color: var(--text-light);
+}
+
+.flow-time {
+  margin-left: auto;
+  color: var(--text-light);
+  font-size: 0.75rem;
+}
+
+.flow-body {
+  color: var(--text);
+}
+
+.flow-action {
+  font-weight: 500;
+}
+
+.flow-changes {
+  margin-top: 0.25rem;
+  font-family: monospace;
+  color: var(--working);
+  font-size: 0.8rem;
+  background: #f0f7ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
 }
